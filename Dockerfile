@@ -1,0 +1,21 @@
+FROM node:20-slim
+
+WORKDIR /app
+
+RUN apt-get update && \
+    apt-get install -y python3 make g++ openssl && \
+    rm -rf /var/lib/apt/lists/* && \
+    corepack enable && \
+    corepack prepare pnpm@10.28.2 --activate
+
+COPY . .
+
+RUN pnpm install --frozen-lockfile
+
+RUN pnpm turbo build --filter=api...
+
+WORKDIR /app/apps/api
+
+EXPOSE 3000
+
+CMD ["sh", "-c", "node dist/main.js"]
