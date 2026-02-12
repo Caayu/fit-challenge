@@ -14,6 +14,7 @@ import { PaginationQueryDto } from '../../../common/dto/pagination.dto'
 import { CreateBookDto } from '../../application/dto/create-book.dto'
 import { UpdateBookDto } from '../../application/dto/update-book.dto'
 import { CreateBookUseCase } from '../../application/use-cases/create-book.use-case'
+import { GetBookUseCase } from '../../application/use-cases/get-book.use-case'
 import { ListBooksUseCase } from '../../application/use-cases/list-books.use-case'
 import { UpdateBookUseCase } from '../../application/use-cases/update-book.use-case'
 import { BookExceptionFilter } from './book-exception.filter'
@@ -24,6 +25,7 @@ import { BookExceptionFilter } from './book-exception.filter'
 export class BooksController {
   constructor(
     private readonly createBookUseCase: CreateBookUseCase,
+    private readonly getBookUseCase: GetBookUseCase,
     private readonly listBooksUseCase: ListBooksUseCase,
     private readonly updateBookUseCase: UpdateBookUseCase
   ) {}
@@ -48,6 +50,17 @@ export class BooksController {
   })
   findAll(@Query() query: PaginationQueryDto) {
     return this.listBooksUseCase.execute(query)
+  }
+
+  @Get(':id')
+  @ApiOperation({ summary: 'Get a book by ID' })
+  @ApiResponse({
+    status: 200,
+    description: 'Return the book.'
+  })
+  @ApiResponse({ status: 404, description: 'Book not found.' })
+  findOne(@Param('id', ParseIntPipe) id: number) {
+    return this.getBookUseCase.execute(id)
   }
 
   @Put(':id')
