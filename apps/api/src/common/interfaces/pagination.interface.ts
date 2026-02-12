@@ -10,5 +10,7 @@ export interface PaginationResult<T> {
     total: number
     page: number
     lastPage: number
+    previousPage: number | null
+    nextPage: number | null
   }
 }

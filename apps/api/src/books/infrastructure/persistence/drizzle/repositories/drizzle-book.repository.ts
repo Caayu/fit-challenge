@@ -73,7 +73,9 @@ export class DrizzleBookRepository implements BookRepository {
       meta: {
         total,
         page,
-        lastPage: Math.ceil(total / limit)
+        lastPage: Math.ceil(total / limit),
+        previousPage: page > 1 ? page - 1 : null,
+        nextPage: page < Math.ceil(total / limit) ? page + 1 : null
       }
     }
   }
