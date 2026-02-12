@@ -1,0 +1,37 @@
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    container_name: fit-challenge-api
+    working_dir: /app/apps/api
+    command: pnpm dev
+    volumes:
+      - .:/app
+    ports:
+      - "${API_PORT:-3001}:${API_PORT:-3001}"
+    environment:
+      - PORT=${API_PORT:-3001}
+    networks:
+      - fit-challenge-net
+
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    container_name: fit-challenge-web
+    working_dir: /app/apps/web
+    command: pnpm dev
+    volumes:
+      - .:/app
+    ports:
+      - "${WEB_PORT:-3000}:${WEB_PORT:-3000}"
+    environment:
+      - PORT=${WEB_PORT:-3000}
+      - WATCHPACK_POLLING=true
+    networks:
+      - fit-challenge-net
+
+networks:
+  fit-challenge-net:
+    driver: bridge
