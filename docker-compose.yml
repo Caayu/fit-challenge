@@ -9,9 +9,16 @@ services:
     volumes:
       - .:/app
     ports:
-      - "${API_PORT:-3001}:${API_PORT:-3001}"
+      - '${API_PORT:-3001}:${API_PORT:-3001}'
     environment:
-      - PORT=${API_PORT:-3001}
+      - DATABASE_HOST=postgres
+      - DATABASE_PORT=5432
+      - DATABASE_USER=postgres
+      - DATABASE_PASSWORD=postgres
+      - DATABASE_NAME=fit-challenge
+    depends_on:
+      postgres:
+        condition: service_healthy
     networks:
       - fit-challenge-net
 
@@ -25,13 +32,35 @@ services:
     volumes:
       - .:/app
     ports:
-      - "${WEB_PORT:-3000}:${WEB_PORT:-3000}"
+      - '${WEB_PORT:-3000}:${WEB_PORT:-3000}'
     environment:
       - PORT=${WEB_PORT:-3000}
       - WATCHPACK_POLLING=true
     networks:
       - fit-challenge-net
 
+  postgres:
+    image: postgres:15-alpine
+    container_name: fit-challenge-db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: fit-challenge
+    ports:
+      - '5432:5432'
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U postgres']
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - fit-challenge-net
+
 networks:
   fit-challenge-net:
     driver: bridge
+
+volumes:
+  postgres-data:
