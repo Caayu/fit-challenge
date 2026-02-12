@@ -17,16 +17,22 @@ export function BookList({ initialData, search }: BookListProps) {
 
   return (
     <>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-12 mt-8">
-        {books.map((book) => (
-          <BookCard
-            key={book.id}
-            title={book.title}
-            description={book.description}
-            image={book.image}
-          />
-        ))}
-      </div>
+      {books.length === 0 ? (
+        <p className="text-center text-gray-500 text-lg mt-8">
+          Nenhum livro encontrado.
+        </p>
+      ) : (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-12 mt-8">
+          {books.map((book) => (
+            <BookCard
+              key={book.id}
+              title={book.title}
+              description={book.description}
+              image={book.image}
+            />
+          ))}
+        </div>
+      )}
 
       {meta.nextPage && (
         <div ref={observerRef} className="flex justify-center py-8">
