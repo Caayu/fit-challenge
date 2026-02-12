@@ -1,26 +1,9 @@
 import { Suspense } from 'react'
 import { BookCard } from '../components/book-card'
 import { SearchInput } from '../components/search-input'
+import type { BooksResponse } from '../types/book'
 
 const API_URL = process.env.API_URL ?? 'http://localhost:3001'
-
-type Book = {
-  id: number
-  title: string
-  description: string
-  image: string
-}
-
-type BooksResponse = {
-  data: Book[]
-  meta: {
-    total: number
-    page: number
-    lastPage: number
-    previousPage: number | null
-    nextPage: number | null
-  }
-}
 
 type PageProps = {
   searchParams: Promise<{ q?: string }>
