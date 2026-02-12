@@ -1,60 +1,19 @@
 'use client'
 
-import { useCallback, useEffect, useRef, useState } from 'react'
-import type { Book, BooksResponse } from '../types/book'
+import { useInfiniteBooks } from '../hooks/use-infinite-books'
+import type { BooksResponse } from '../types/book'
 import { BookCard } from './book-card'
 
 type BookListProps = {
-  initialBooks: Book[]
-  initialMeta: BooksResponse['meta']
+  initialData: BooksResponse
   search?: string
 }
 
-export function BookList({ initialBooks, initialMeta, search }: BookListProps) {
-  const [books, setBooks] = useState(initialBooks)
-  const [meta, setMeta] = useState(initialMeta)
-  const [loading, setLoading] = useState(false)
-  const observerRef = useRef<HTMLDivElement>(null)
-
-  useEffect(() => {
-    setBooks(initialBooks)
-    setMeta(initialMeta)
-  }, [initialBooks, initialMeta])
-
-  const loadMore = useCallback(async () => {
-    if (loading || !meta.nextPage) return
-    setLoading(true)
-
-    const params = new URLSearchParams({
-      page: String(meta.nextPage),
-      limit: '10'
-    })
-    if (search) params.set('search', search)
-
-    const res = await fetch(`/api/proxy/books?${params}`)
-    const data: BooksResponse = await res.json()
-
-    setBooks((prev) => [...prev, ...data.data])
-    setMeta(data.meta)
-    setLoading(false)
-  }, [loading, meta.nextPage, search])
-
-  useEffect(() => {
-    const el = observerRef.current
-    if (!el) return
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        if (entries[0]?.isIntersecting) {
-          void loadMore()
-        }
-      },
-      { threshold: 0.1 }
-    )
-
-    observer.observe(el)
-    return () => observer.disconnect()
-  }, [loadMore])
+export function BookList({ initialData, search }: BookListProps) {
+  const { books, meta, loading, observerRef } = useInfiniteBooks(
+    initialData,
+    search
+  )
 
   return (
     <>

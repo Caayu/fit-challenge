@@ -22,7 +22,7 @@ async function getBooks(search?: string): Promise<BooksResponse> {
 
 export default async function Home({ searchParams }: PageProps) {
   const { q } = await searchParams
-  const { data: books, meta } = await getBooks(q)
+  const data = await getBooks(q)
 
   return (
     <div className="min-h-screen bg-[#F0F0F0] px-6 py-10">
@@ -38,7 +38,7 @@ export default async function Home({ searchParams }: PageProps) {
           <SearchInput />
         </Suspense>
 
-        <BookList initialBooks={books} initialMeta={meta} search={q} />
+        <BookList initialData={data} search={q} />
       </div>
     </div>
   )
