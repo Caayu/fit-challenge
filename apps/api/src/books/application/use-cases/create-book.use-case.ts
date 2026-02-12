@@ -2,12 +2,13 @@ import { Inject, Injectable } from '@nestjs/common'
 import { Book } from '../../domain/entities/book.entity'
 import { BookAlreadyExistsError } from '../../domain/errors/book.errors'
 import type { BookRepository } from '../../domain/repositories/book.repository'
+import { BOOK_REPOSITORY } from '../../domain/repositories/book.tokens'
 import { CreateBookDto } from '../dto/create-book.dto'
 
 @Injectable()
 export class CreateBookUseCase {
   constructor(
-    @Inject('BookRepository')
+    @Inject(BOOK_REPOSITORY)
     private readonly bookRepository: BookRepository
   ) {}
 

@@ -3,11 +3,12 @@ import { PaginationQueryDto } from '../../../common/dto/pagination.dto'
 import { PaginationResult } from '../../../common/interfaces/pagination.interface'
 import type { Book } from '../../domain/entities/book.entity'
 import type { BookRepository } from '../../domain/repositories/book.repository'
+import { BOOK_REPOSITORY } from '../../domain/repositories/book.tokens'
 
 @Injectable()
 export class ListBooksUseCase {
   constructor(
-    @Inject('BookRepository')
+    @Inject(BOOK_REPOSITORY)
     private readonly bookRepository: BookRepository
   ) {}
 

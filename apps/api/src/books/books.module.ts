@@ -4,6 +4,7 @@ import { CreateBookUseCase } from './application/use-cases/create-book.use-case'
 import { GetBookUseCase } from './application/use-cases/get-book.use-case'
 import { ListBooksUseCase } from './application/use-cases/list-books.use-case'
 import { UpdateBookUseCase } from './application/use-cases/update-book.use-case'
+import { BOOK_REPOSITORY } from './domain/repositories/book.tokens'
 import { DrizzleBookRepository } from './infrastructure/persistence/drizzle/repositories/drizzle-book.repository'
 import { BooksController } from './infrastructure/web/books.controller'
 
@@ -12,7 +13,7 @@ import { BooksController } from './infrastructure/web/books.controller'
   controllers: [BooksController],
   providers: [
     {
-      provide: 'BookRepository',
+      provide: BOOK_REPOSITORY,
       useClass: DrizzleBookRepository
     },
     CreateBookUseCase,

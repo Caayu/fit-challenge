@@ -1,12 +1,13 @@
 import { Inject, Injectable } from '@nestjs/common'
 import { BookNotFoundError } from '../../domain/errors/book.errors'
 import type { BookRepository } from '../../domain/repositories/book.repository'
+import { BOOK_REPOSITORY } from '../../domain/repositories/book.tokens'
 import { UpdateBookDto } from '../dto/update-book.dto'
 
 @Injectable()
 export class UpdateBookUseCase {
   constructor(
-    @Inject('BookRepository')
+    @Inject(BOOK_REPOSITORY)
     private readonly bookRepository: BookRepository
   ) {}
 
