@@ -39,7 +39,11 @@ export class DrizzleBookRepository implements BookRepository {
       ? or(
           ilike(schema.books.title, `%${search}%`),
           ilike(schema.books.author, `%${search}%`),
-          ilike(schema.books.description, `%${search}%`)
+          ilike(schema.books.description, `%${search}%`),
+          ilike(
+            sql`REPLACE(${schema.books.author}, ' ', '')`,
+            `%${search.replace(/\s/g, '')}%`
+          )
         )
       : undefined
 
