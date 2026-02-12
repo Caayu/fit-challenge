@@ -1,5 +1,5 @@
 import { Suspense } from 'react'
-import { BookCard } from '../components/book-card'
+import { BookList } from '../components/book-list'
 import { SearchInput } from '../components/search-input'
 import type { BooksResponse } from '../types/book'
 
@@ -22,7 +22,7 @@ async function getBooks(search?: string): Promise<BooksResponse> {
 
 export default async function Home({ searchParams }: PageProps) {
   const { q } = await searchParams
-  const { data: books } = await getBooks(q)
+  const { data: books, meta } = await getBooks(q)
 
   return (
     <div className="min-h-screen bg-[#F0F0F0] px-6 py-10">
@@ -38,16 +38,7 @@ export default async function Home({ searchParams }: PageProps) {
           <SearchInput />
         </Suspense>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-12 mt-8">
-          {books.map((book) => (
-            <BookCard
-              key={book.id}
-              title={book.title}
-              description={book.description}
-              image={book.image}
-            />
-          ))}
-        </div>
+        <BookList initialBooks={books} initialMeta={meta} search={q} />
       </div>
     </div>
   )
