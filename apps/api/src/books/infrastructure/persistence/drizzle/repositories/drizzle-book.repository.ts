@@ -60,22 +60,16 @@ export class DrizzleBookRepository implements BookRepository {
       offset
     })
 
-    const data = records.map(
-      (record) =>
-        new Book({
-          id: record.id,
-          title: record.title,
-          author: record.author,
-          publicationDate: record.publicationDate,
-          description: record.description,
-          image: record.image,
-          createdAt: record.createdAt,
-          updatedAt: record.updatedAt
-        })
-    )
-
     return {
-      data,
+      data: records.map(
+        (record) =>
+          new Book({
+            ...record,
+            publicationDate: new Date(record.publicationDate),
+            createdAt: record.createdAt,
+            updatedAt: record.updatedAt
+          })
+      ),
       meta: {
         total,
         page,
@@ -95,14 +89,45 @@ export class DrizzleBookRepository implements BookRepository {
     if (!record) return null
 
     return new Book({
-      id: record.id,
-      title: record.title,
-      author: record.author,
-      publicationDate: record.publicationDate,
-      description: record.description,
-      image: record.image,
+      ...record,
+      publicationDate: new Date(record.publicationDate),
       createdAt: record.createdAt,
       updatedAt: record.updatedAt
     })
+  }
+
+  async findById(id: number): Promise<Book | null> {
+    const record = await this.db.query.books.findFirst({
+      where: eq(schema.books.id, id)
+    })
+
+    if (!record) return null
+
+    return new Book({
+      ...record,
+      publicationDate: new Date(record.publicationDate),
+      createdAt: record.createdAt,
+      updatedAt: record.updatedAt
+    })
+  }
+
+  async update(book: Book): Promise<void> {
+    const props = book.getProps()
+
+    if (!props.id) {
+      throw new Error('Book ID is required for update')
+    }
+
+    await this.db
+      .update(schema.books)
+      .set({
+        title: props.title,
+        author: props.author,
+        publicationDate: props.publicationDate.toISOString(),
+        description: props.description,
+        image: props.image,
+        updatedAt: props.updatedAt
+      })
+      .where(eq(schema.books.id, props.id!))
   }
 }

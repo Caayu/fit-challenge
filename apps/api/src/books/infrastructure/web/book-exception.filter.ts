@@ -7,13 +7,17 @@ import {
 import { Response } from 'express'
 import {
   BookAlreadyExistsError,
+  BookNotFoundError,
   InvalidBookDataError
 } from '../../domain/errors/book.errors'
 
-@Catch(InvalidBookDataError, BookAlreadyExistsError)
+@Catch(InvalidBookDataError, BookAlreadyExistsError, BookNotFoundError)
 export class BookExceptionFilter implements ExceptionFilter {
   catch(
-    exception: InvalidBookDataError | BookAlreadyExistsError,
+    exception:
+      | InvalidBookDataError
+      | BookAlreadyExistsError
+      | BookNotFoundError,
     host: ArgumentsHost
   ) {
     const ctx = host.switchToHttp()
@@ -33,6 +37,15 @@ export class BookExceptionFilter implements ExceptionFilter {
         statusCode: HttpStatus.CONFLICT,
         message: exception.message,
         error: 'Conflict'
+      })
+      return
+    }
+
+    if (exception instanceof BookNotFoundError) {
+      response.status(HttpStatus.NOT_FOUND).json({
+        statusCode: HttpStatus.NOT_FOUND,
+        message: exception.message,
+        error: 'Not Found'
       })
       return
     }

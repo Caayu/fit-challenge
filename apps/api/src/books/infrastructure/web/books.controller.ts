@@ -1,9 +1,21 @@
-import { Body, Controller, Get, Post, Query, UseFilters } from '@nestjs/common'
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  ParseIntPipe,
+  Post,
+  Put,
+  Query,
+  UseFilters
+} from '@nestjs/common'
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
 import { PaginationQueryDto } from '../../../common/dto/pagination.dto'
 import { CreateBookDto } from '../../application/dto/create-book.dto'
+import { UpdateBookDto } from '../../application/dto/update-book.dto'
 import { CreateBookUseCase } from '../../application/use-cases/create-book.use-case'
 import { ListBooksUseCase } from '../../application/use-cases/list-books.use-case'
+import { UpdateBookUseCase } from '../../application/use-cases/update-book.use-case'
 import { BookExceptionFilter } from './book-exception.filter'
 
 @ApiTags('books')
@@ -12,7 +24,8 @@ import { BookExceptionFilter } from './book-exception.filter'
 export class BooksController {
   constructor(
     private readonly createBookUseCase: CreateBookUseCase,
-    private readonly listBooksUseCase: ListBooksUseCase
+    private readonly listBooksUseCase: ListBooksUseCase,
+    private readonly updateBookUseCase: UpdateBookUseCase
   ) {}
 
   @Post()
@@ -35,5 +48,19 @@ export class BooksController {
   })
   findAll(@Query() query: PaginationQueryDto) {
     return this.listBooksUseCase.execute(query)
+  }
+
+  @Put(':id')
+  @ApiOperation({ summary: 'Update a book' })
+  @ApiResponse({
+    status: 200,
+    description: 'The book has been successfully updated.'
+  })
+  @ApiResponse({ status: 404, description: 'Book not found.' })
+  update(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() updateBookDto: UpdateBookDto
+  ) {
+    return this.updateBookUseCase.execute(id, updateBookDto)
   }
 }

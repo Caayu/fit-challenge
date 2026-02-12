@@ -2,13 +2,13 @@ import { InvalidBookDataError } from '../errors/book.errors'
 
 export class Book {
   private readonly id?: number
-  private readonly title: string
-  private readonly author: string
-  private readonly publicationDate: Date
-  private readonly description: string
-  private readonly image: string
+  private title: string
+  private author: string
+  private publicationDate: Date
+  private description: string
+  private image: string
   private readonly createdAt: Date
-  private readonly updatedAt: Date
+  private updatedAt: Date
 
   constructor(props: {
     id?: number
@@ -46,6 +46,26 @@ export class Book {
     if (this.publicationDate > new Date()) {
       throw new InvalidBookDataError('Publication date cannot be in the future')
     }
+  }
+
+  public update(
+    props: Partial<{
+      title: string
+      author: string
+      publicationDate: string | Date
+      description: string
+      image: string
+    }>
+  ): void {
+    if (props.title !== undefined) this.title = props.title
+    if (props.author !== undefined) this.author = props.author
+    if (props.publicationDate !== undefined)
+      this.publicationDate = new Date(props.publicationDate)
+    if (props.description !== undefined) this.description = props.description
+    if (props.image !== undefined) this.image = props.image
+
+    this.updatedAt = new Date()
+    this.validate()
   }
 
   public getProps() {

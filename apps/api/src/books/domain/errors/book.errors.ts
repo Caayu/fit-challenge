@@ -16,3 +16,9 @@ export class BookAlreadyExistsError extends DomainError {
     super(`A book with title "${title}" by author "${author}" already exists.`)
   }
 }
+
+export class BookNotFoundError extends DomainError {
+  constructor(id: number) {
+    super(`Book with ID ${id} not found`)
+  }
+}
