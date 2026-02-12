@@ -1,6 +1,10 @@
 import { Inject, Injectable } from '@nestjs/common'
-import { and, desc, eq } from 'drizzle-orm'
+import { and, desc, eq, ilike, or, sql } from 'drizzle-orm'
 import { NodePgDatabase } from 'drizzle-orm/node-postgres'
+import {
+  PaginationParams,
+  PaginationResult
+} from '../../../../../common/interfaces/pagination.interface'
 import { DATABASE_CONNECTION } from '../../../../../database/database-connection'
 import { Book } from '../../../../domain/entities/book.entity'
 import { BookRepository } from '../../../../domain/repositories/book.repository'
@@ -27,12 +31,32 @@ export class DrizzleBookRepository implements BookRepository {
       .onConflictDoNothing()
   }
 
-  async findAll(): Promise<Book[]> {
+  async findAll(params: PaginationParams): Promise<PaginationResult<Book>> {
+    const { page, limit, search } = params
+    const offset = (page - 1) * limit
+
+    const where = search
+      ? or(
+          ilike(schema.books.title, `%${search}%`),
+          ilike(schema.books.author, `%${search}%`),
+          ilike(schema.books.description, `%${search}%`)
+        )
+      : undefined
+
+    const [totalCount] = await this.db
+      .select({ count: sql<number>`count(*)` })
+      .from(schema.books)
+      .where(where)
+    const total = totalCount?.count ? Number(totalCount.count) : 0
+
     const records = await this.db.query.books.findMany({
-      orderBy: [desc(schema.books.publicationDate)]
+      where,
+      orderBy: [desc(schema.books.publicationDate)],
+      limit,
+      offset
     })
 
-    return records.map(
+    const data = records.map(
       (record) =>
         new Book({
           id: record.id,
@@ -45,6 +69,15 @@ export class DrizzleBookRepository implements BookRepository {
           updatedAt: record.updatedAt
         })
     )
+
+    return {
+      data,
+      meta: {
+        total,
+        page,
+        lastPage: Math.ceil(total / limit)
+      }
+    }
   }
 
   async findByTitleAndAuthor(
