@@ -3,6 +3,7 @@ import { ConfigModule } from '@nestjs/config'
 import { ServeStaticModule } from '@nestjs/serve-static'
 import { join } from 'path'
 import { AppController } from './app.controller'
+import { BooksModule } from './books/books.module'
 import { DatabaseModule } from './database/database.module'
 import { UploadModule } from './upload/upload.module'
 
@@ -13,6 +14,7 @@ import { UploadModule } from './upload/upload.module'
       envFilePath: '../../.env'
     }),
     DatabaseModule,
+    BooksModule,
     UploadModule,
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, '..', 'uploads'),
