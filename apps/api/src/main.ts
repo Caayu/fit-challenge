@@ -5,6 +5,7 @@ import { AppModule } from './app.module'
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule)
+  app.setGlobalPrefix('api')
   app.useGlobalPipes(
     new ValidationPipe({
       transform: true,
@@ -20,7 +21,7 @@ async function bootstrap() {
     .addTag('books')
     .build()
   const document = SwaggerModule.createDocument(app, config)
-  SwaggerModule.setup('api', app, document)
+  SwaggerModule.setup('api/docs', app, document)
   await app.listen(process.env.PORT ?? 3001)
 }
 void bootstrap()
