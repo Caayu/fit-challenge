@@ -15,6 +15,13 @@
       "when": 1770866177845,
       "tag": "0001_exotic_ikaris",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1770916333387,
+      "tag": "0002_confused_the_anarchist",
+      "breakpoints": true
     }
   ]
 }

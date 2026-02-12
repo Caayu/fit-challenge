@@ -1,8 +1,12 @@
 import { Global, Module } from '@nestjs/common'
 import { drizzle } from 'drizzle-orm/node-postgres'
 import { Pool } from 'pg'
-import * as schema from '../books/schemas/schema'
+import * as booksSchema from '../books/infrastructure/persistence/drizzle/schemas/book.schema'
 import { DATABASE_CONNECTION } from './database-connection'
+
+const schema = {
+  ...booksSchema
+}
 
 @Global()
 @Module({
