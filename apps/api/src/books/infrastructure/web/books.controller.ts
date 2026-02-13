@@ -1,3 +1,12 @@
+import { CreateBookDto } from '@/books/application/dto/create-book.dto'
+import { UpdateBookDto } from '@/books/application/dto/update-book.dto'
+import { CreateBookUseCase } from '@/books/application/use-cases/create-book.use-case'
+import { DeleteBookUseCase } from '@/books/application/use-cases/delete-book.use-case'
+import { GetBookUseCase } from '@/books/application/use-cases/get-book.use-case'
+import { ListBooksUseCase } from '@/books/application/use-cases/list-books.use-case'
+import { UpdateBookUseCase } from '@/books/application/use-cases/update-book.use-case'
+import { BookExceptionFilter } from '@/books/infrastructure/web/book-exception.filter'
+import { PaginationQueryDto } from '@/common/dto/pagination.dto'
 import {
   Body,
   Controller,
@@ -12,15 +21,6 @@ import {
   UseFilters
 } from '@nestjs/common'
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
-import { PaginationQueryDto } from '../../../common/dto/pagination.dto'
-import { CreateBookDto } from '../../application/dto/create-book.dto'
-import { UpdateBookDto } from '../../application/dto/update-book.dto'
-import { CreateBookUseCase } from '../../application/use-cases/create-book.use-case'
-import { DeleteBookUseCase } from '../../application/use-cases/delete-book.use-case'
-import { GetBookUseCase } from '../../application/use-cases/get-book.use-case'
-import { ListBooksUseCase } from '../../application/use-cases/list-books.use-case'
-import { UpdateBookUseCase } from '../../application/use-cases/update-book.use-case'
-import { BookExceptionFilter } from './book-exception.filter'
 
 @ApiTags('books')
 @Controller('books')

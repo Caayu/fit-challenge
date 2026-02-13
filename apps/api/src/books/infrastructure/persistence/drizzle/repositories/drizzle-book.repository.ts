@@ -1,14 +1,14 @@
-import { Inject, Injectable } from '@nestjs/common'
-import { and, desc, eq, ilike, or, sql } from 'drizzle-orm'
-import { NodePgDatabase } from 'drizzle-orm/node-postgres'
+import { Book } from '@/books/domain/entities/book.entity'
+import { BookRepository } from '@/books/domain/repositories/book.repository'
+import * as schema from '@/books/infrastructure/persistence/drizzle/schemas/book.schema'
 import {
   PaginationParams,
   PaginationResult
-} from '../../../../../common/interfaces/pagination.interface'
-import { DATABASE_CONNECTION } from '../../../../../database/database-connection'
-import { Book } from '../../../../domain/entities/book.entity'
-import { BookRepository } from '../../../../domain/repositories/book.repository'
-import * as schema from '../schemas/book.schema'
+} from '@/common/interfaces/pagination.interface'
+import { DATABASE_CONNECTION } from '@/database/database-connection'
+import { Inject, Injectable } from '@nestjs/common'
+import { and, desc, eq, ilike, or, sql } from 'drizzle-orm'
+import { NodePgDatabase } from 'drizzle-orm/node-postgres'
 
 @Injectable()
 export class DrizzleBookRepository implements BookRepository {

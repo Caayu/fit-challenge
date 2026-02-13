@@ -1,8 +1,8 @@
+import { UpdateBookDto } from '@/books/application/dto/update-book.dto'
+import { BookNotFoundError } from '@/books/domain/errors/book.errors'
+import type { BookRepository } from '@/books/domain/repositories/book.repository'
+import { BOOK_REPOSITORY } from '@/books/domain/repositories/book.tokens'
 import { Inject, Injectable } from '@nestjs/common'
-import { BookNotFoundError } from '../../domain/errors/book.errors'
-import type { BookRepository } from '../../domain/repositories/book.repository'
-import { BOOK_REPOSITORY } from '../../domain/repositories/book.tokens'
-import { UpdateBookDto } from '../dto/update-book.dto'
 
 @Injectable()
 export class UpdateBookUseCase {

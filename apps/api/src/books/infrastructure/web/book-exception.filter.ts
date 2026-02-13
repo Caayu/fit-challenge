@@ -1,15 +1,15 @@
 import {
+  BookAlreadyExistsError,
+  BookNotFoundError,
+  InvalidBookDataError
+} from '@/books/domain/errors/book.errors'
+import {
   ArgumentsHost,
   Catch,
   ExceptionFilter,
   HttpStatus
 } from '@nestjs/common'
 import { Response } from 'express'
-import {
-  BookAlreadyExistsError,
-  BookNotFoundError,
-  InvalidBookDataError
-} from '../../domain/errors/book.errors'
 
 @Catch(InvalidBookDataError, BookAlreadyExistsError, BookNotFoundError)
 export class BookExceptionFilter implements ExceptionFilter {

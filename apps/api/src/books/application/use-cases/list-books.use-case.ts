@@ -1,9 +1,9 @@
+import type { Book } from '@/books/domain/entities/book.entity'
+import type { BookRepository } from '@/books/domain/repositories/book.repository'
+import { BOOK_REPOSITORY } from '@/books/domain/repositories/book.tokens'
+import { PaginationQueryDto } from '@/common/dto/pagination.dto'
+import { PaginationResult } from '@/common/interfaces/pagination.interface'
 import { Inject, Injectable } from '@nestjs/common'
-import { PaginationQueryDto } from '../../../common/dto/pagination.dto'
-import { PaginationResult } from '../../../common/interfaces/pagination.interface'
-import type { Book } from '../../domain/entities/book.entity'
-import type { BookRepository } from '../../domain/repositories/book.repository'
-import { BOOK_REPOSITORY } from '../../domain/repositories/book.tokens'
 
 @Injectable()
 export class ListBooksUseCase {

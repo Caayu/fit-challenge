@@ -1,6 +1,6 @@
+import type { BookRepository } from '@/books/domain/repositories/book.repository'
+import { BOOK_REPOSITORY } from '@/books/domain/repositories/book.tokens'
 import { Inject, Injectable } from '@nestjs/common'
-import type { BookRepository } from '../../domain/repositories/book.repository'
-import { BOOK_REPOSITORY } from '../../domain/repositories/book.tokens'
 
 @Injectable()
 export class DeleteBookUseCase {
