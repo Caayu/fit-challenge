@@ -12,7 +12,7 @@ COPY . .
 
 RUN pnpm install --frozen-lockfile
 
-RUN pnpm turbo build --filter=api...
+RUN pnpm --filter=api run build
 
 WORKDIR /app/apps/api
 
