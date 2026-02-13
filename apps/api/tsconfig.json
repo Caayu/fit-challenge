@@ -9,7 +9,6 @@
     "outDir": "./dist",
     "rootDir": "./src",
     "baseUrl": "./",
-    "incremental": true,
     "forceConsistentCasingInFileNames": true,
     "noImplicitAny": false,
     "strictBindCallApply": false,
