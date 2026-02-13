@@ -2,6 +2,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { fetchBookById } from '../../../actions/fetch-books'
+import { resolveImageUrl } from '../../../utils/image'
 
 type PageProps = {
   params: Promise<{ id: string }>
@@ -39,7 +40,7 @@ export default async function BookDetailPage({ params }: PageProps) {
         </header>
 
         <div className="flex flex-col md:flex-row gap-8">
-          <div className="flex-1 flex flex-col gap-4">
+          <div className="flex-1 max-w-2xl flex flex-col gap-4">
             <h1 className="text-[40px] font-semibold leading-tight text-[#111111]">
               {book.title}
             </h1>
@@ -56,7 +57,7 @@ export default async function BookDetailPage({ params }: PageProps) {
 
           <div className="shrink-0">
             <Image
-              src={book.image}
+              src={resolveImageUrl(book.image)}
               alt={book.title}
               width={280}
               height={420}
