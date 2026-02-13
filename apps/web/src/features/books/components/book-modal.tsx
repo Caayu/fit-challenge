@@ -59,6 +59,11 @@ export function BookModal({ book, onClose, onSave }: BookModalProps) {
       return
 
     const [day, month, year] = publicationDate.split('/')
+    if (!day || !month || !year) {
+      alert('Data inválida. Use o formato DD/MM/AAAA')
+      return
+    }
+
     const isoDate = `${year}-${month}-${day}`
 
     setSaving(true)
@@ -108,7 +113,19 @@ export function BookModal({ book, onClose, onSave }: BookModalProps) {
               type="text"
               placeholder="Data de publicação"
               value={publicationDate}
-              onChange={(e) => setPublicationDate(e.target.value)}
+              onChange={(e) => {
+                let value = e.target.value.replace(/\D/g, '')
+                if (value.length > 8) value = value.slice(0, 8)
+
+                if (value.length >= 5) {
+                  value = `${value.slice(0, 2)}/${value.slice(2, 4)}/${value.slice(4)}`
+                } else if (value.length >= 3) {
+                  value = `${value.slice(0, 2)}/${value.slice(2)}`
+                }
+
+                setPublicationDate(value)
+              }}
+              maxLength={10}
               className="w-full px-4 py-3 rounded-lg bg-[#f5f5f5] text-[#111111] placeholder-gray-400 outline-none"
             />
           </div>

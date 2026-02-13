@@ -44,6 +44,14 @@ export async function createBook(input: BookInput): Promise<Book> {
     body: JSON.stringify(input)
   })
 
+  if (!res.ok) {
+    throw new Error('Failed to create book')
+  }
+
+  if (res.status === 204 || res.headers.get('content-length') === '0') {
+    return {} as Book
+  }
+
   return res.json()
 }
 
@@ -57,6 +65,14 @@ export async function updateBook(
     body: JSON.stringify(input)
   })
 
+  if (!res.ok) {
+    throw new Error('Failed to update book')
+  }
+
+  if (res.status === 204 || res.headers.get('content-length') === '0') {
+    return {} as Book
+  }
+
   return res.json()
 }
 
@@ -67,5 +83,14 @@ export async function uploadImage(formData: FormData): Promise<string> {
   })
 
   const data = await res.json()
+  if (data.url && data.url.startsWith('http')) {
+    try {
+      const parsed = new URL(data.url)
+      return parsed.pathname + parsed.search
+    } catch {
+      return data.url
+    }
+  }
+
   return data.url
 }
