@@ -1,87 +1,74 @@
+import { zodResolver } from '@hookform/resolvers/zod'
+import { useTransition } from 'react'
+import { useForm } from 'react-hook-form'
+
+import { bookSchema, type BookFormData } from '@/features/books/schemas'
 import type { Book } from '@/features/books/types'
-import { useState, useTransition } from 'react'
-import { toast } from 'sonner'
 
 type UseBookFormProps = {
   book?: Book
-  onSave: (data: {
-    title: string
-    author: string
-    publicationDate: string
-    description: string
-    image: string
-  }) => Promise<void>
+  onSave: (data: BookFormData) => Promise<void>
 }
 
 export function useBookForm({ book, onSave }: UseBookFormProps) {
-  const [title, setTitle] = useState(book?.title ?? '')
-  const [author, setAuthor] = useState(book?.author ?? '')
-  const [publicationDate, setPublicationDate] = useState(() => {
-    if (!book?.publicationDate) return ''
-    const datePart = book.publicationDate.split('T')[0]
-    if (!datePart) return ''
-    const [year, month, day] = datePart.split('-')
-    return `${day}/${month}/${year}`
-  })
-  const [description, setDescription] = useState(book?.description ?? '')
-  const [imageUrl, setImageUrl] = useState(book?.image ?? '')
-  const [uploading, setUploading] = useState(false)
   const [saving, startTransition] = useTransition()
 
-  const handleDateChange = (value: string) => {
-    let formatted = value.replace(/\D/g, '')
-    if (formatted.length > 8) formatted = formatted.slice(0, 8)
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    watch,
+    formState: { errors }
+  } = useForm<BookFormData>({
+    resolver: zodResolver(bookSchema),
+    defaultValues: {
+      title: book?.title ?? '',
+      author: book?.author ?? '',
+      description: book?.description ?? '',
+      image: book?.image ?? '',
+      publicationDate: book?.publicationDate
+        ? (() => {
+            const datePart = book.publicationDate.split('T')[0]
+            if (!datePart) return ''
+            const [year, month, day] = datePart.split('-')
+            return `${day}/${month}/${year}`
+          })()
+        : ''
+    }
+  })
 
-    if (formatted.length >= 5) {
-      formatted = `${formatted.slice(0, 2)}/${formatted.slice(2, 4)}/${formatted.slice(4)}`
-    } else if (formatted.length >= 3) {
-      formatted = `${formatted.slice(0, 2)}/${formatted.slice(2)}`
+  const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    let value = e.target.value.replace(/\D/g, '')
+    if (value.length > 8) value = value.slice(0, 8)
+
+    if (value.length >= 5) {
+      value = `${value.slice(0, 2)}/${value.slice(2, 4)}/${value.slice(4)}`
+    } else if (value.length >= 3) {
+      value = `${value.slice(0, 2)}/${value.slice(2)}`
     }
 
-    setPublicationDate(formatted)
+    setValue('publicationDate', value, { shouldValidate: true })
   }
 
-  const handleSubmit = () => {
-    if (!title || !author || !publicationDate || !description || !imageUrl)
-      return
-
-    const [day, month, year] = publicationDate.split('/')
-    if (!day || !month || !year) {
-      toast.error('Data inválida. Use o formato DD/MM/AAAA')
-      return
-    }
-
+  const onSubmit = handleSubmit((data) => {
+    const [day, month, year] = data.publicationDate.split('/')
     const isoDate = `${year}-${month}-${day}`
 
     startTransition(async () => {
       await onSave({
-        title,
-        author,
-        publicationDate: isoDate,
-        description,
-        image: imageUrl
+        ...data,
+        publicationDate: isoDate
       })
     })
-  }
+  })
 
   return {
-    formState: {
-      title,
-      author,
-      publicationDate,
-      description,
-      imageUrl,
-      uploading,
-      saving
-    },
-    setters: {
-      setTitle,
-      setAuthor,
-      handleDateChange,
-      setDescription,
-      setImageUrl,
-      setUploading
-    },
-    handleSubmit
+    register,
+    errors,
+    watch,
+    setValue,
+    handleDateChange,
+    handleSubmit: onSubmit,
+    saving
   }
 }

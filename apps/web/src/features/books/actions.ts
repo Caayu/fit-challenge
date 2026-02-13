@@ -51,7 +51,22 @@ export async function createBook(input: BookInput): Promise<ActionState<Book>> {
     })
 
     if (!res.ok) {
-      return { success: false, error: 'Failed to create book' }
+      if (res.status === 409) {
+        return {
+          success: false,
+          error: 'Já existe um livro cadastrado com este título e autor.'
+        }
+      }
+
+      try {
+        const errorData = await res.json()
+        return {
+          success: false,
+          error: errorData.message || 'Falha ao criar o livro.'
+        }
+      } catch {
+        return { success: false, error: 'Falha ao criar o livro.' }
+      }
     }
 
     let data: Book = {} as Book
@@ -62,7 +77,7 @@ export async function createBook(input: BookInput): Promise<ActionState<Book>> {
     revalidatePath('/')
     return { success: true, data }
   } catch {
-    return { success: false, error: 'Network error occurred' }
+    return { success: false, error: 'Erro de conexão. Verifique sua internet.' }
   }
 }
 
@@ -78,7 +93,22 @@ export async function updateBook(
     })
 
     if (!res.ok) {
-      return { success: false, error: 'Failed to update book' }
+      if (res.status === 409) {
+        return {
+          success: false,
+          error: 'Já existe um livro cadastrado com este título e autor.'
+        }
+      }
+
+      try {
+        const errorData = await res.json()
+        return {
+          success: false,
+          error: errorData.message || 'Falha ao atualizar o livro.'
+        }
+      } catch {
+        return { success: false, error: 'Falha ao atualizar o livro.' }
+      }
     }
 
     let data: Book = {} as Book
@@ -90,7 +120,7 @@ export async function updateBook(
     revalidatePath(`/books/${id}`)
     return { success: true, data }
   } catch {
-    return { success: false, error: 'Network error occurred' }
+    return { success: false, error: 'Erro de conexão. Verifique sua internet.' }
   }
 }
 
@@ -120,12 +150,12 @@ export async function deleteBook(id: number): Promise<ActionState<void>> {
     })
 
     if (!res.ok) {
-      return { success: false, error: 'Failed to delete book' }
+      return { success: false, error: 'Falha ao excluir o livro.' }
     }
 
     revalidatePath('/')
     return { success: true }
   } catch {
-    return { success: false, error: 'Network error occurred' }
+    return { success: false, error: 'Erro de conexão. Verifique sua internet.' }
   }
 }

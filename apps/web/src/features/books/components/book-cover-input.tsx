@@ -1,7 +1,7 @@
 'use client'
 
 import Image from 'next/image'
-import { useRef } from 'react'
+import { useRef, useState } from 'react'
 
 import { uploadImage } from '@/features/books/actions'
 import { resolveImageUrl } from '@/lib/image'
@@ -9,16 +9,13 @@ import { resolveImageUrl } from '@/lib/image'
 type BookCoverInputProps = {
   imageUrl: string
   onImageChange: (url: string) => void
-  uploading: boolean
-  setUploading: (uploading: boolean) => void
 }
 
 export function BookCoverInput({
   imageUrl,
-  onImageChange,
-  uploading,
-  setUploading
+  onImageChange
 }: BookCoverInputProps) {
+  const [uploading, setUploading] = useState(false)
   const fileInputRef = useRef<HTMLInputElement>(null)
 
   const handleImageClick = () => {

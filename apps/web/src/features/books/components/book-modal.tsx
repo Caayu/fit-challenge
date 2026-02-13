@@ -17,7 +17,15 @@ type BookModalProps = {
 }
 
 export function BookModal({ book, onClose, onSave }: BookModalProps) {
-  const { formState, setters, handleSubmit } = useBookForm({ book, onSave })
+  const {
+    register,
+    errors,
+    setValue,
+    watch,
+    handleDateChange,
+    handleSubmit,
+    saving
+  } = useBookForm({ book, onSave })
 
   const isEdit = !!book
 
@@ -37,45 +45,79 @@ export function BookModal({ book, onClose, onSave }: BookModalProps) {
 
           <div className="flex gap-6">
             <div className="flex-1 flex flex-col gap-4">
-              <input
-                type="text"
-                placeholder="Título"
-                value={formState.title}
-                onChange={(e) => setters.setTitle(e.target.value)}
-                className="w-full px-4 py-3 rounded-lg bg-[#f5f5f5] text-[#111111] placeholder-gray-400 outline-none"
-              />
-              <input
-                type="text"
-                placeholder="Autor"
-                value={formState.author}
-                onChange={(e) => setters.setAuthor(e.target.value)}
-                className="w-full px-4 py-3 rounded-lg bg-[#f5f5f5] text-[#111111] placeholder-gray-400 outline-none"
-              />
-              <input
-                type="text"
-                placeholder="Data de publicação"
-                value={formState.publicationDate}
-                onChange={(e) => setters.handleDateChange(e.target.value)}
-                maxLength={10}
-                className="w-full px-4 py-3 rounded-lg bg-[#f5f5f5] text-[#111111] placeholder-gray-400 outline-none"
-              />
+              <div className="flex flex-col gap-1">
+                <input
+                  type="text"
+                  placeholder="Título"
+                  {...register('title')}
+                  className="w-full px-4 py-3 rounded-lg bg-[#f5f5f5] text-[#111111] placeholder-gray-400 outline-none"
+                />
+                {errors.title && (
+                  <span className="text-red-500 text-sm ml-1">
+                    {errors.title.message}
+                  </span>
+                )}
+              </div>
+
+              <div className="flex flex-col gap-1">
+                <input
+                  type="text"
+                  placeholder="Autor"
+                  {...register('author')}
+                  className="w-full px-4 py-3 rounded-lg bg-[#f5f5f5] text-[#111111] placeholder-gray-400 outline-none"
+                />
+                {errors.author && (
+                  <span className="text-red-500 text-sm ml-1">
+                    {errors.author.message}
+                  </span>
+                )}
+              </div>
+
+              <div className="flex flex-col gap-1">
+                <input
+                  type="text"
+                  placeholder="Data de publicação"
+                  {...register('publicationDate')}
+                  onChange={handleDateChange}
+                  maxLength={10}
+                  className="w-full px-4 py-3 rounded-lg bg-[#f5f5f5] text-[#111111] placeholder-gray-400 outline-none"
+                />
+                {errors.publicationDate && (
+                  <span className="text-red-500 text-sm ml-1">
+                    {errors.publicationDate.message}
+                  </span>
+                )}
+              </div>
             </div>
 
-            <BookCoverInput
-              imageUrl={formState.imageUrl}
-              onImageChange={setters.setImageUrl}
-              uploading={formState.uploading}
-              setUploading={setters.setUploading}
-            />
+            <div className="flex flex-col gap-1">
+              <BookCoverInput
+                imageUrl={watch('image')}
+                onImageChange={(url) =>
+                  setValue('image', url, { shouldValidate: true })
+                }
+              />
+              {errors.image && (
+                <span className="text-red-500 text-sm text-center">
+                  {errors.image.message}
+                </span>
+              )}
+            </div>
           </div>
 
-          <textarea
-            placeholder="Descrição"
-            value={formState.description}
-            onChange={(e) => setters.setDescription(e.target.value)}
-            rows={8}
-            className="w-full px-4 py-3 rounded-lg bg-[#f5f5f5] text-[#111111] placeholder-gray-400 outline-none resize-none"
-          />
+          <div className="flex flex-col gap-1">
+            <textarea
+              placeholder="Descrição"
+              {...register('description')}
+              rows={8}
+              className="w-full px-4 py-3 rounded-lg bg-[#f5f5f5] text-[#111111] placeholder-gray-400 outline-none resize-none"
+            />
+            {errors.description && (
+              <span className="text-red-500 text-sm ml-1">
+                {errors.description.message}
+              </span>
+            )}
+          </div>
 
           <div className="flex justify-center gap-4">
             <button
@@ -86,10 +128,10 @@ export function BookModal({ book, onClose, onSave }: BookModalProps) {
             </button>
             <button
               onClick={handleSubmit}
-              disabled={formState.saving}
+              disabled={saving}
               className="px-10 py-3 rounded-full bg-[#7EC8E3] text-white font-medium cursor-pointer hover:bg-[#5bb8d8] transition-colors disabled:opacity-50"
             >
-              {formState.saving ? 'Salvando...' : 'Salvar'}
+              {saving ? 'Salvando...' : 'Salvar'}
             </button>
           </div>
         </div>
