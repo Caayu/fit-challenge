@@ -47,8 +47,6 @@ O projeto utiliza **Turborepo** para orquestração de builds e tarefas, com **p
 - `@repo/eslint-config`: Configurações de linting padronizadas.
 - `@repo/typescript-config`: Configurações base do TypeScript (`tsconfig.json`).
 
-**Estratégia de Versionamento:**
-
 ## 3. Stack Tecnológica
 
 As versões listadas abaixo são exatas, conforme extraído dos arquivos de configuração.
