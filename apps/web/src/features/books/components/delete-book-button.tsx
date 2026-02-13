@@ -16,11 +16,18 @@ export function DeleteBookButton({ id }: DeleteBookButtonProps) {
 
   const handleDelete = async () => {
     try {
-      await deleteBook(id)
-      router.push('/')
+      const res = await deleteBook(id)
+      if (res.success) {
+        router.push('/')
+      } else {
+        alert(res.error)
+        throw new Error(res.error)
+      }
     } catch (error) {
       console.error(error)
-      alert('Erro ao excluir livro')
+      if (error instanceof Error && error.message !== 'Failed to delete book') {
+        alert('Erro ao excluir livro')
+      }
       throw error
     }
   }

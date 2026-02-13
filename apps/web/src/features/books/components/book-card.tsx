@@ -1,7 +1,7 @@
 'use client'
 
 import Image from 'next/image'
-import { useRouter } from 'next/navigation'
+import Link from 'next/link'
 import { useState } from 'react'
 
 import { resolveImageUrl } from '@/lib/image'
@@ -18,12 +18,11 @@ type BookCardProps = {
 
 export function BookCard({ id, title, description, image }: BookCardProps) {
   const [src, setSrc] = useState(resolveImageUrl(image))
-  const router = useRouter()
 
   return (
-    <div
-      onClick={() => router.push(`/books/${id}`)}
-      className="w-full aspect-3/4 rounded-2xl bg-white flex flex-col cursor-pointer"
+    <Link
+      href={`/books/${id}`}
+      className="w-full aspect-3/4 rounded-2xl bg-white flex flex-col cursor-pointer hover:shadow-lg transition-shadow"
     >
       <div className="relative flex items-center justify-center p-4 bg-[#E0E0E2] rounded-t-2xl">
         <Image
@@ -43,6 +42,6 @@ export function BookCard({ id, title, description, image }: BookCardProps) {
           {description}
         </p>
       </div>
-    </div>
+    </Link>
   )
 }

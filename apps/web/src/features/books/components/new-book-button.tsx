@@ -17,9 +17,13 @@ export function NewBookButton() {
     description: string
     image: string
   }) => {
-    await createBook(data)
-    setOpen(false)
-    router.refresh()
+    const res = await createBook(data)
+    if (res.success) {
+      setOpen(false)
+      router.refresh()
+    } else {
+      alert(res.error)
+    }
   }
 
   return (

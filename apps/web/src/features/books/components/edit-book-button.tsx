@@ -22,15 +22,23 @@ export function EditBookButton({ book }: EditBookButtonProps) {
     description: string
     image: string
   }) => {
-    await updateBook(book.id, data)
-    setOpen(false)
-    router.refresh()
+    const res = await updateBook(book.id, data)
+    if (res.success) {
+      setOpen(false)
+      router.refresh()
+    } else {
+      alert(res.error)
+    }
   }
 
   const handleDelete = async () => {
-    await deleteBook(book.id)
-    setOpen(false)
-    router.refresh()
+    const res = await deleteBook(book.id)
+    if (res.success) {
+      setOpen(false)
+      router.refresh()
+    } else {
+      alert(res.error)
+    }
   }
 
   return (
