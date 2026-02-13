@@ -35,7 +35,10 @@ services:
       - '${WEB_PORT:-3000}:${WEB_PORT:-3000}'
     environment:
       - PORT=${WEB_PORT:-3000}
+      - API_URL=http://api:${API_PORT:-3001}
       - WATCHPACK_POLLING=true
+    depends_on:
+      - api
     networks:
       - fit-challenge-net
 
