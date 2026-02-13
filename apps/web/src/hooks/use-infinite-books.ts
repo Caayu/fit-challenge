@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
+import { fetchBooks } from '../actions/fetch-books'
 import type { BooksResponse } from '../types/book'
 
 export function useInfiniteBooks(initialData: BooksResponse, search?: string) {
@@ -19,14 +20,7 @@ export function useInfiniteBooks(initialData: BooksResponse, search?: string) {
     setLoading(true)
 
     try {
-      const params = new URLSearchParams({
-        page: String(meta.nextPage),
-        limit: '10'
-      })
-      if (search) params.set('search', search)
-
-      const res = await fetch(`/api/proxy/books?${params}`)
-      const data: BooksResponse = await res.json()
+      const data = await fetchBooks(meta.nextPage, 10, search)
 
       setBooks((prev) => [...prev, ...data.data])
       setMeta(data.meta)
