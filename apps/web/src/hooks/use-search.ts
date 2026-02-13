@@ -8,6 +8,8 @@ export function useSearch() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const [query, setQuery] = useState(searchParams.get('q') ?? '')
+  const routerRef = useRef(router)
+  routerRef.current = router
 
   const debouncedNavigate = useRef(
     debounce((value: string) => {
@@ -19,7 +21,7 @@ export function useSearch() {
         params.delete('q')
       }
 
-      router.replace(`?${params.toString()}`)
+      routerRef.current.replace(`?${params.toString()}`)
     }, 300)
   ).current
 

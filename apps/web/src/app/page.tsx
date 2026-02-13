@@ -1,9 +1,8 @@
 import { Suspense } from 'react'
 import { BookList } from '../components/book-list'
 import { SearchInput } from '../components/search-input'
+import { API_URL } from '../config/env'
 import type { BooksResponse } from '../types/book'
-
-const API_URL = process.env.API_URL ?? 'http://localhost:3001'
 
 type PageProps = {
   searchParams: Promise<{ q?: string }>
@@ -16,6 +15,19 @@ async function getBooks(search?: string): Promise<BooksResponse> {
   const res = await fetch(`${API_URL}/api/books?${params}`, {
     cache: 'no-store'
   })
+
+  if (!res.ok) {
+    return {
+      data: [],
+      meta: {
+        total: 0,
+        page: 1,
+        lastPage: 1,
+        previousPage: null,
+        nextPage: null
+      }
+    }
+  }
 
   return res.json()
 }

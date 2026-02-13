@@ -1,6 +1,6 @@
 'use client'
 
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import type { BooksResponse } from '../types/book'
 
 export function useInfiniteBooks(initialData: BooksResponse, search?: string) {
@@ -14,23 +14,26 @@ export function useInfiniteBooks(initialData: BooksResponse, search?: string) {
     setMeta(initialData.meta)
   }, [initialData])
 
-  const loadMore = useCallback(async () => {
+  const loadMore = async () => {
     if (loading || !meta.nextPage) return
     setLoading(true)
 
-    const params = new URLSearchParams({
-      page: String(meta.nextPage),
-      limit: '10'
-    })
-    if (search) params.set('search', search)
+    try {
+      const params = new URLSearchParams({
+        page: String(meta.nextPage),
+        limit: '10'
+      })
+      if (search) params.set('search', search)
 
-    const res = await fetch(`/api/proxy/books?${params}`)
-    const data: BooksResponse = await res.json()
+      const res = await fetch(`/api/proxy/books?${params}`)
+      const data: BooksResponse = await res.json()
 
-    setBooks((prev) => [...prev, ...data.data])
-    setMeta(data.meta)
-    setLoading(false)
-  }, [loading, meta.nextPage, search])
+      setBooks((prev) => [...prev, ...data.data])
+      setMeta(data.meta)
+    } finally {
+      setLoading(false)
+    }
+  }
 
   useEffect(() => {
     const el = observerRef.current
@@ -45,7 +48,7 @@ export function useInfiniteBooks(initialData: BooksResponse, search?: string) {
 
     observer.observe(el)
     return () => observer.disconnect()
-  }, [loadMore])
+  }, [meta.nextPage, search])
 
   return { books, meta, loading, observerRef }
 }
