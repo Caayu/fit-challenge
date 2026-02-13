@@ -1,7 +1,8 @@
 'use client'
 
 import { Search } from 'lucide-react'
-import { useSearch } from '../hooks/use-search'
+
+import { useSearch } from '@/hooks/use-search'
 
 type SearchInputProps = {
   placeholder?: string

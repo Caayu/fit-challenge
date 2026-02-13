@@ -2,9 +2,10 @@
 
 import Image from 'next/image'
 import { useRef, useState } from 'react'
-import { uploadImage } from '../actions/upload-image'
-import type { Book } from '../types/book'
-import { resolveImageUrl } from '../utils/image'
+
+import { uploadImage } from '@/features/books/actions'
+import type { Book } from '@/features/books/types'
+import { resolveImageUrl } from '@/lib/image'
 
 type BookModalProps = {
   book?: Book

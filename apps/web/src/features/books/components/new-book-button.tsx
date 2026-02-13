@@ -2,8 +2,9 @@
 
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
-import { createBook } from '../actions/manage-books'
-import { BookModal } from './book-modal'
+
+import { createBook } from '@/features/books/actions'
+import { BookModal } from '@/features/books/components/book-modal'
 
 export function NewBookButton() {
   const [open, setOpen] = useState(false)

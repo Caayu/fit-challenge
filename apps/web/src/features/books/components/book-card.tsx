@@ -3,7 +3,8 @@
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
-import { resolveImageUrl } from '../utils/image'
+
+import { resolveImageUrl } from '@/lib/image'
 
 const FALLBACK_IMAGE =
   "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='180'%3E%3Crect width='120' height='180' fill='%23ccc' rx='4'/%3E%3Ctext x='50%25' y='50%25' text-anchor='middle' dy='.3em' font-size='14' fill='%23666'%3ESem capa%3C/text%3E%3C/svg%3E"

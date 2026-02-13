@@ -2,9 +2,10 @@
 
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
-import { updateBook } from '../actions/manage-books'
-import type { Book } from '../types/book'
-import { BookModal } from './book-modal'
+
+import { updateBook } from '@/features/books/actions'
+import { BookModal } from '@/features/books/components/book-modal'
+import type { Book } from '@/features/books/types'
 
 type EditBookButtonProps = {
   book: Book

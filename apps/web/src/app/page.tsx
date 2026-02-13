@@ -1,8 +1,8 @@
+import { SearchInput } from '@/components/search-input'
+import { fetchBooks } from '@/features/books/actions'
+import { BookList } from '@/features/books/components/book-list'
+import { NewBookButton } from '@/features/books/components/new-book-button'
 import { Suspense } from 'react'
-import { fetchBooks } from '../actions/fetch-books'
-import { BookList } from '../components/book-list'
-import { NewBookButton } from '../components/new-book-button'
-import { SearchInput } from '../components/search-input'
 
 type PageProps = {
   searchParams: Promise<{ q?: string }>

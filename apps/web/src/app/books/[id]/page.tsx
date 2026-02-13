@@ -1,9 +1,9 @@
+import { fetchBookById } from '@/features/books/actions'
+import { EditBookButton } from '@/features/books/components/edit-book-button'
+import { resolveImageUrl } from '@/lib/image'
 import Image from 'next/image'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
-import { fetchBookById } from '../../../actions/fetch-books'
-import { EditBookButton } from '../../../components/edit-book-button'
-import { resolveImageUrl } from '../../../utils/image'
 
 type PageProps = {
   params: Promise<{ id: string }>

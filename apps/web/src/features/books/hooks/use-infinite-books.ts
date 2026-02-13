@@ -1,8 +1,9 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
-import { fetchBooks } from '../actions/fetch-books'
-import type { BooksResponse } from '../types/book'
+
+import { fetchBooks } from '@/features/books/actions'
+import type { BooksResponse } from '@/features/books/types'
 
 export function useInfiniteBooks(initialData: BooksResponse, search?: string) {
   const [books, setBooks] = useState(initialData.data)

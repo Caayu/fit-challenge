@@ -1,8 +1,8 @@
 'use client'
 
-import { useInfiniteBooks } from '../hooks/use-infinite-books'
-import type { BooksResponse } from '../types/book'
-import { BookCard } from './book-card'
+import { BookCard } from '@/features/books/components/book-card'
+import { useInfiniteBooks } from '@/features/books/hooks/use-infinite-books'
+import type { BooksResponse } from '@/features/books/types'
 
 type BookListProps = {
   initialData: BooksResponse
