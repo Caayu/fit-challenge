@@ -61,8 +61,7 @@ export async function createBook(input: BookInput): Promise<ActionState<Book>> {
 
     revalidatePath('/')
     return { success: true, data }
-  } catch (error) {
-    console.error(error)
+  } catch {
     return { success: false, error: 'Network error occurred' }
   }
 }
@@ -90,8 +89,7 @@ export async function updateBook(
     revalidatePath('/')
     revalidatePath(`/books/${id}`)
     return { success: true, data }
-  } catch (error) {
-    console.error(error)
+  } catch {
     return { success: false, error: 'Network error occurred' }
   }
 }
@@ -127,8 +125,7 @@ export async function deleteBook(id: number): Promise<ActionState<void>> {
 
     revalidatePath('/')
     return { success: true }
-  } catch (error) {
-    console.error(error)
+  } catch {
     return { success: false, error: 'Network error occurred' }
   }
 }

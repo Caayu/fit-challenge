@@ -1,5 +1,6 @@
 import type { Book } from '@/features/books/types'
 import { useState, useTransition } from 'react'
+import { toast } from 'sonner'
 
 type UseBookFormProps = {
   book?: Book
@@ -44,7 +45,7 @@ export function useBookForm({ book, onSave }: UseBookFormProps) {
 
     const [day, month, year] = publicationDate.split('/')
     if (!day || !month || !year) {
-      alert('Data inválida. Use o formato DD/MM/AAAA')
+      toast.error('Data inválida. Use o formato DD/MM/AAAA')
       return
     }
 

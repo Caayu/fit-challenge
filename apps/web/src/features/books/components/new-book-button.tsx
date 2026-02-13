@@ -2,6 +2,7 @@
 
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
+import { toast } from 'sonner'
 
 import { createBook } from '@/features/books/actions'
 import { BookModal } from '@/features/books/components/book-modal'
@@ -20,9 +21,10 @@ export function NewBookButton() {
     const res = await createBook(data)
     if (res.success) {
       setOpen(false)
+      toast.success('Livro criado com sucesso!')
       router.refresh()
     } else {
-      alert(res.error)
+      toast.error(res.error)
     }
   }
 

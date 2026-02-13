@@ -2,6 +2,7 @@
 
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
+import { toast } from 'sonner'
 
 import { deleteBook, updateBook } from '@/features/books/actions'
 import { BookModal } from '@/features/books/components/book-modal'
@@ -25,9 +26,10 @@ export function EditBookButton({ book }: EditBookButtonProps) {
     const res = await updateBook(book.id, data)
     if (res.success) {
       setOpen(false)
+      toast.success('Livro atualizado com sucesso!')
       router.refresh()
     } else {
-      alert(res.error)
+      toast.error(res.error)
     }
   }
 
@@ -35,9 +37,10 @@ export function EditBookButton({ book }: EditBookButtonProps) {
     const res = await deleteBook(book.id)
     if (res.success) {
       setOpen(false)
+      toast.success('Livro excluído com sucesso!')
       router.refresh()
     } else {
-      alert(res.error)
+      toast.error(res.error)
     }
   }
 

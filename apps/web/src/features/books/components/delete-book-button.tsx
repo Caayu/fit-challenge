@@ -2,6 +2,7 @@
 
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
+import { toast } from 'sonner'
 
 import { deleteBook } from '@/features/books/actions'
 import { DeleteConfirmationModal } from '@/features/books/components/delete-confirmation-modal'
@@ -18,15 +19,15 @@ export function DeleteBookButton({ id }: DeleteBookButtonProps) {
     try {
       const res = await deleteBook(id)
       if (res.success) {
+        toast.success('Livro excluído com sucesso!')
         router.push('/')
       } else {
-        alert(res.error)
+        toast.error(res.error)
         throw new Error(res.error)
       }
     } catch (error) {
-      console.error(error)
       if (error instanceof Error && error.message !== 'Failed to delete book') {
-        alert('Erro ao excluir livro')
+        toast.error('Erro ao excluir livro')
       }
       throw error
     }
