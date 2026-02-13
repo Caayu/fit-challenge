@@ -4,7 +4,7 @@ import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { toast } from 'sonner'
 
-import { deleteBook, updateBook } from '@/features/books/actions'
+import { updateBook } from '@/features/books/actions'
 import { BookModal } from '@/features/books/components/book-modal'
 import type { Book } from '@/features/books/types'
 
@@ -33,17 +33,6 @@ export function EditBookButton({ book }: EditBookButtonProps) {
     }
   }
 
-  const handleDelete = async () => {
-    const res = await deleteBook(book.id)
-    if (res.success) {
-      setOpen(false)
-      toast.success('Livro excluído com sucesso!')
-      router.refresh()
-    } else {
-      toast.error(res.error)
-    }
-  }
-
   return (
     <>
       <button
@@ -58,7 +47,6 @@ export function EditBookButton({ book }: EditBookButtonProps) {
           book={book}
           onClose={() => setOpen(false)}
           onSave={handleSave}
-          onDelete={handleDelete}
         />
       )}
     </>

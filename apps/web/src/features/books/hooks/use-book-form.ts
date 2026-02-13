@@ -16,11 +16,13 @@ type UseBookFormProps = {
 export function useBookForm({ book, onSave }: UseBookFormProps) {
   const [title, setTitle] = useState(book?.title ?? '')
   const [author, setAuthor] = useState(book?.author ?? '')
-  const [publicationDate, setPublicationDate] = useState(
-    book?.publicationDate
-      ? new Date(book.publicationDate).toLocaleDateString('pt-BR')
-      : ''
-  )
+  const [publicationDate, setPublicationDate] = useState(() => {
+    if (!book?.publicationDate) return ''
+    const datePart = book.publicationDate.split('T')[0]
+    if (!datePart) return ''
+    const [year, month, day] = datePart.split('-')
+    return `${day}/${month}/${year}`
+  })
   const [description, setDescription] = useState(book?.description ?? '')
   const [imageUrl, setImageUrl] = useState(book?.image ?? '')
   const [uploading, setUploading] = useState(false)

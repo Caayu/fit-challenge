@@ -1,9 +1,6 @@
 'use client'
 
-import { useState } from 'react'
-
 import { BookCoverInput } from '@/features/books/components/book-cover-input'
-import { DeleteConfirmationModal } from '@/features/books/components/delete-confirmation-modal'
 import { useBookForm } from '@/features/books/hooks/use-book-form'
 import type { Book } from '@/features/books/types'
 
@@ -17,25 +14,12 @@ type BookModalProps = {
     description: string
     image: string
   }) => Promise<void>
-  onDelete?: () => Promise<void>
 }
 
-export function BookModal({ book, onClose, onSave, onDelete }: BookModalProps) {
+export function BookModal({ book, onClose, onSave }: BookModalProps) {
   const { formState, setters, handleSubmit } = useBookForm({ book, onSave })
-  const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false)
 
   const isEdit = !!book
-
-  const handleDeleteClick = () => {
-    setShowDeleteConfirmation(true)
-  }
-
-  const handleConfirmDelete = async () => {
-    if (onDelete) {
-      await onDelete()
-    }
-    setShowDeleteConfirmation(false)
-  }
 
   return (
     <>
@@ -94,15 +78,6 @@ export function BookModal({ book, onClose, onSave, onDelete }: BookModalProps) {
           />
 
           <div className="flex justify-center gap-4">
-            {onDelete && (
-              <button
-                onClick={handleDeleteClick}
-                className="px-10 py-3 rounded-full bg-red-100 text-red-600 font-medium cursor-pointer hover:bg-red-200 transition-colors mr-auto"
-              >
-                Excluir
-              </button>
-            )}
-
             <button
               onClick={onClose}
               className="px-10 py-3 rounded-full bg-[#e0e0e0] text-[#111111] font-medium cursor-pointer hover:bg-[#d0d0d0] transition-colors"
@@ -119,13 +94,6 @@ export function BookModal({ book, onClose, onSave, onDelete }: BookModalProps) {
           </div>
         </div>
       </div>
-
-      {showDeleteConfirmation && (
-        <DeleteConfirmationModal
-          onConfirm={handleConfirmDelete}
-          onCancel={() => setShowDeleteConfirmation(false)}
-        />
-      )}
     </>
   )
 }
