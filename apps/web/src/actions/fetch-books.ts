@@ -1,7 +1,7 @@
 'use server'
 
 import { API_URL } from '../config/env'
-import type { BooksResponse } from '../types/book'
+import type { Book, BooksResponse } from '../types/book'
 
 export async function fetchBooks(
   page: number,
@@ -15,6 +15,14 @@ export async function fetchBooks(
   if (search) params.set('search', search)
 
   const res = await fetch(`${API_URL}/api/books?${params}`, {
+    cache: 'no-store'
+  })
+
+  return res.json()
+}
+
+export async function fetchBookById(id: number): Promise<Book> {
+  const res = await fetch(`${API_URL}/api/books/${id}`, {
     cache: 'no-store'
   })
 
