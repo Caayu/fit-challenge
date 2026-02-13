@@ -18,4 +18,4 @@ WORKDIR /app/apps/api
 
 EXPOSE 3000
 
-CMD ["sh", "-c", "pnpm db:migrate && find /app -name 'main.js' 2>/dev/null && node /app/apps/api/dist/main.js"]
+CMD ["sh", "-c", "pnpm db:migrate && node /app/apps/api/dist/src/main.js"]
