@@ -18,4 +18,4 @@ WORKDIR /app/apps/api
 
 EXPOSE 3000
 
-CMD ["sh", "-c", "pnpm db:migrate && node dist/main.js"]
+CMD ["sh", "-c", "echo '=== ENV ===' && echo DATABASE_URL=$DATABASE_URL && echo '============' && pnpm db:migrate && node dist/main.js"]
