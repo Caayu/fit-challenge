@@ -10,4 +10,5 @@ export interface BookRepository {
   findByTitleAndAuthor(title: string, author: string): Promise<Book | null>
   findById(id: number): Promise<Book | null>
   update(book: Book): Promise<void>
+  delete(id: number): Promise<void>
 }

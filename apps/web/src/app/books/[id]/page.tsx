@@ -1,4 +1,5 @@
 import { fetchBookById } from '@/features/books/actions'
+import { DeleteBookButton } from '@/features/books/components/delete-book-button'
 import { EditBookButton } from '@/features/books/components/edit-book-button'
 import { resolveImageUrl } from '@/lib/image'
 import Image from 'next/image'
@@ -32,9 +33,7 @@ export default async function BookDetailPage({ params }: PageProps) {
 
           <div className="flex items-center gap-6">
             <EditBookButton book={book} />
-            <button className="text-lg font-medium text-red-600 cursor-pointer hover:opacity-70 transition-opacity">
-              Excluir
-            </button>
+            <DeleteBookButton id={book.id} />
           </div>
         </header>
 

@@ -3,7 +3,7 @@
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 
-import { updateBook } from '@/features/books/actions'
+import { deleteBook, updateBook } from '@/features/books/actions'
 import { BookModal } from '@/features/books/components/book-modal'
 import type { Book } from '@/features/books/types'
 
@@ -27,6 +27,12 @@ export function EditBookButton({ book }: EditBookButtonProps) {
     router.refresh()
   }
 
+  const handleDelete = async () => {
+    await deleteBook(book.id)
+    setOpen(false)
+    router.refresh()
+  }
+
   return (
     <>
       <button
@@ -41,6 +47,7 @@ export function EditBookButton({ book }: EditBookButtonProps) {
           book={book}
           onClose={() => setOpen(false)}
           onSave={handleSave}
+          onDelete={handleDelete}
         />
       )}
     </>

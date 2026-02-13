@@ -132,4 +132,8 @@ export class DrizzleBookRepository implements BookRepository {
       })
       .where(eq(schema.books.id, props.id!))
   }
+
+  async delete(id: number): Promise<void> {
+    await this.db.delete(schema.books).where(eq(schema.books.id, id))
+  }
 }

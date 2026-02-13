@@ -94,3 +94,13 @@ export async function uploadImage(formData: FormData): Promise<string> {
 
   return data.url
 }
+
+export async function deleteBook(id: number): Promise<void> {
+  const res = await fetch(`${API_URL}/api/books/${id}`, {
+    method: 'DELETE'
+  })
+
+  if (!res.ok) {
+    throw new Error('Failed to delete book')
+  }
+}

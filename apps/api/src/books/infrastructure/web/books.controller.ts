@@ -1,7 +1,9 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
+  HttpCode,
   Param,
   ParseIntPipe,
   Post,
@@ -14,6 +16,7 @@ import { PaginationQueryDto } from '../../../common/dto/pagination.dto'
 import { CreateBookDto } from '../../application/dto/create-book.dto'
 import { UpdateBookDto } from '../../application/dto/update-book.dto'
 import { CreateBookUseCase } from '../../application/use-cases/create-book.use-case'
+import { DeleteBookUseCase } from '../../application/use-cases/delete-book.use-case'
 import { GetBookUseCase } from '../../application/use-cases/get-book.use-case'
 import { ListBooksUseCase } from '../../application/use-cases/list-books.use-case'
 import { UpdateBookUseCase } from '../../application/use-cases/update-book.use-case'
@@ -27,7 +30,8 @@ export class BooksController {
     private readonly createBookUseCase: CreateBookUseCase,
     private readonly getBookUseCase: GetBookUseCase,
     private readonly listBooksUseCase: ListBooksUseCase,
-    private readonly updateBookUseCase: UpdateBookUseCase
+    private readonly updateBookUseCase: UpdateBookUseCase,
+    private readonly deleteBookUseCase: DeleteBookUseCase
   ) {}
 
   @Post()
@@ -75,5 +79,17 @@ export class BooksController {
     @Body() updateBookDto: UpdateBookDto
   ) {
     return this.updateBookUseCase.execute(id, updateBookDto)
+  }
+
+  @Delete(':id')
+  @HttpCode(204)
+  @ApiOperation({ summary: 'Delete a book' })
+  @ApiResponse({
+    status: 204,
+    description: 'The book has been successfully deleted.'
+  })
+  @ApiResponse({ status: 404, description: 'Book not found.' })
+  delete(@Param('id', ParseIntPipe) id: number) {
+    return this.deleteBookUseCase.execute(id)
   }
 }
