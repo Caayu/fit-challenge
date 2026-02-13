@@ -1,6 +1,7 @@
 import { Suspense } from 'react'
 import { fetchBooks } from '../actions/fetch-books'
 import { BookList } from '../components/book-list'
+import { NewBookButton } from '../components/new-book-button'
 import { SearchInput } from '../components/search-input'
 
 type PageProps = {
@@ -16,9 +17,7 @@ export default async function Home({ searchParams }: PageProps) {
       <div className="max-w-6xl mx-auto flex flex-col gap-8">
         <header className="flex items-center justify-between">
           <h1 className="text-3xl md:text-4xl font-bold">Livros</h1>
-          <button className="text-xl md:text-2xl font-medium cursor-pointer">
-            Novo
-          </button>
+          <NewBookButton />
         </header>
 
         <Suspense>

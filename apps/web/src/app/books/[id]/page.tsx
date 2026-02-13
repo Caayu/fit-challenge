@@ -2,6 +2,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { fetchBookById } from '../../../actions/fetch-books'
+import { EditBookButton } from '../../../components/edit-book-button'
 import { resolveImageUrl } from '../../../utils/image'
 
 type PageProps = {
@@ -30,9 +31,7 @@ export default async function BookDetailPage({ params }: PageProps) {
           </Link>
 
           <div className="flex items-center gap-6">
-            <button className="text-lg font-medium cursor-pointer hover:opacity-70 transition-opacity">
-              Editar
-            </button>
+            <EditBookButton book={book} />
             <button className="text-lg font-medium text-red-600 cursor-pointer hover:opacity-70 transition-opacity">
               Excluir
             </button>
