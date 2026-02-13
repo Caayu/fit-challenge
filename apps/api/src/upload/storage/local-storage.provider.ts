@@ -5,7 +5,9 @@ import { StorageProvider } from './storage.interface'
 
 @Injectable()
 export class LocalStorageProvider implements StorageProvider {
-  private readonly uploadDir = './uploads/images'
+  private readonly baseDir =
+    process.env.UPLOAD_DIR || join(process.cwd(), 'uploads')
+  private readonly uploadDir = join(this.baseDir, 'images')
 
   async upload(file: Express.Multer.File, filename: string): Promise<string> {
     await mkdir(this.uploadDir, { recursive: true })

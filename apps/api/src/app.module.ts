@@ -17,7 +17,7 @@ import { UploadModule } from './upload/upload.module'
     BooksModule,
     UploadModule,
     ServeStaticModule.forRoot({
-      rootPath: join(process.cwd(), 'uploads'),
+      rootPath: process.env.UPLOAD_DIR || join(process.cwd(), 'uploads'),
       serveRoot: '/uploads'
     })
   ],

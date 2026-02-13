@@ -14,13 +14,25 @@ const schema = {
     {
       provide: DATABASE_CONNECTION,
       useFactory: () => {
-        const pool = new Pool({
-          host: process.env.DATABASE_HOST,
-          port: parseInt(process.env.DATABASE_PORT || '5432'),
-          user: process.env.DATABASE_USER,
-          password: process.env.DATABASE_PASSWORD,
-          database: process.env.DATABASE_NAME
-        })
+        const connectionString = process.env.DATABASE_URL
+
+        const poolConfig = connectionString
+          ? {
+              connectionString,
+              ssl:
+                process.env.NODE_ENV === 'production'
+                  ? { rejectUnauthorized: false }
+                  : false
+            }
+          : {
+              host: process.env.DATABASE_HOST,
+              port: parseInt(process.env.DATABASE_PORT || '5432'),
+              user: process.env.DATABASE_USER,
+              password: process.env.DATABASE_PASSWORD,
+              database: process.env.DATABASE_NAME
+            }
+
+        const pool = new Pool(poolConfig)
         return drizzle(pool, { schema })
       }
     }
