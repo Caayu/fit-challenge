@@ -4,7 +4,7 @@ dockerfilePath = "Dockerfile"
 dockerContext = "."
 
 [deploy]
-startCommand = "sh -c 'node dist/main.js'"
+startCommand = "sh -c 'npm run db:migrate && node dist/main.js'"
 healthcheckPath = "/api"
 healthcheckTimeout = 100
 restartPolicyType = "ON_FAILURE"
